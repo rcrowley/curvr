@@ -1,0 +1,56 @@
+NAME
+	curvr -- Automatic approximation of typical Photoshop actions
+
+SYNOPSIS
+	curvr <input> [<process> [<param>...]] <output>
+	curvall <directory> [<process>]
+    curvrmail
+
+DESCRIPTION
+	Editing images is a painful and repetitive process.  The good hacker
+	automates things like this.  Aaron's filtr script doesn't quite do
+	what I want and neither does the GraphicsMagick command line tool.
+	This tool does automatic and acceptable approximations of the curves
+	tool I use most often in Photoshop.
+
+	The supporting scripts and config files enable the phone -> server
+	-> Flickr workflow.
+
+ACTIONS
+	curve (default)
+		First normalizes the image by tucking white and black points,
+		then applies a color map keeping whites and blacks consistent
+		while darkening the mid-range.  Approximates a slightly
+		downward curve in the Photoshop Curves palette.
+	bigcurve
+		Bigger.  60% bigger even.
+	anticurve
+		Opposite of curve, boosting mid-range instead of darkening it.
+
+DEPENDENCIES
+	GraphicsMagick
+		Developed using GraphicsMagick 1.1.10 on Mac OS X.  Will likely
+		work with 1.1.x and on other platforms, but I don't care to try.
+	Flickr::Upload::Dopplr
+		The curvrmail and curvrconf scripts are written in Perl.
+	XML::Simple
+		For curvrconf to pull down tokens
+
+VERSION
+	0.2
+	$Id: README 41 2008-05-22 06:56:41Z rcrowley $
+
+DATE
+	$Date: 2008-05-21 23:56:41 -0700 (Wed, 21 May 2008) $
+
+AUTHOR
+	Richard Crowley <r@rcrowley.org>
+
+SEE ALSO
+	<http://rcrowley.org/2007/11/08/introducing-curvr/>
+	<http://www.aaronland.info/weblog/2006/07/31/baconmelon/#filtr>
+
+LICENSE
+	This work is licensed under a Creative Commons
+	Attribution-Noncommercial-Share Alike 3.0 Unported License
+	<http://creativecommons.org/licenses/by-nc-sa/3.0/>

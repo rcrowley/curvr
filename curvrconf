@@ -1,0 +1,49 @@
+#!/usr/bin/perl
+
+# curvr
+# curvrconf
+# Richard Crowley
+# $Id: curvrconf 23 2008-02-05 04:33:27Z rcrowley $
+
+# Gets a token by redirecting you to http://localhost:81/...
+
+use strict;
+
+use Digest::MD5 'md5_hex';
+use XML::Simple 'XMLin';
+use Net::Google::AuthSub;
+
+# Flickr API config
+my $API_KEY = '';
+my $SECRET = '';
+
+# Send the user to Flickr
+my $api_sig = md5_hex("${SECRET}api_key${API_KEY}permswrite");
+print "\nFlickr\n";
+print "Give this to your browser, bring back what it gives you.\n";
+print "http://flickr.com/services/auth/?api_key=${API_KEY}&perms=write&api_sig=${api_sig}\n";
+print "Result: ";
+my $flickr = <STDIN>;
+
+# Get a token for the Flickr API
+$flickr =~ m!^http://localhost:81/\?frob=(.+)$!;
+my $frob = $1;
+$api_sig = md5_hex("${SECRET}api_key${API_KEY}frob${frob}methodflickr.auth.getToken");
+my $raw = `wget -q -O - 'http://flickr.com/services/rest/?api_key=${API_KEY}&method=flickr.auth.getToken&frob=${frob}&api_sig=${api_sig}'`;
+my $xml = XMLin($raw);
+print "\nFlickr API token: ", $xml->{'auth'}->{'token'}, "\n";
+
+# Send the user to Dopplr
+print "\nDopplr\n";
+print "Give this to your browser, bring back what it gives you.\n";
+print "https://www.dopplr.com/api/AuthSubRequest?scope=http://www.dopplr.com/&next=http://localhost:81/&session=1\n";
+print "Result: ";
+my $dopplr = <STDIN>;
+
+# Get a token for the Dopplr API
+$dopplr =~ m!^http://localhost:81/\?token=(.+)$!;
+my $token = $1;
+my $auth = Net::Google::AuthSub->new('url' => 'https://www.dopplr.com/api');
+$auth->auth('null', $token);
+my $sess = $auth->session_token();
+print "\nDopplr API token: $sess\n\n";

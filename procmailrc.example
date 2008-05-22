@@ -1,0 +1,9 @@
+# Catch email sent to the secret address
+:0 bfW
+* ^TO_<SECRET_CURVRMAIL_ADDRESS>@rcrowley.org
+| /home/rcrowley/bin/curvrmail
+
+# But everything else is business as usual
+#   That is, we send it to Y! Mail
+:0 E :
+! <NORMAL_FORWARDING_DESTINATION>@yahoo.com
