@@ -1,7 +1,7 @@
+#
 # curvr
-# Makefile
-# Richard Crowley
-# $Id: Makefile 41 2008-05-22 06:56:41Z rcrowley $
+# Richard Crowley <r@rcrowley.org>
+#
 
 INCLUDE := -I/usr/local/include/GraphicsMagick -I/usr/local/include/exiv2
 LIB := -L/usr/local/lib \

@@ -1,7 +1,6 @@
-/* curvr
- * depth.cc
- * Richard Crowley
- * $Id: depth.cc 25 2008-02-05 04:33:44Z rcrowley $
+/*
+ * curvr
+ * Richard Crowley <r@rcrowley.org>
  *
  * This is a test file to determine the quantum depth GraphicsMagick uses.
  */

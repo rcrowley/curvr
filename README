@@ -37,11 +37,10 @@ DEPENDENCIES
 		For curvrconf to pull down tokens
 
 VERSION
-	0.2
-	$Id: README 41 2008-05-22 06:56:41Z rcrowley $
+	0.3
 
 DATE
-	$Date: 2008-05-21 23:56:41 -0700 (Wed, 21 May 2008) $
+	2008-05-22
 
 AUTHOR
 	Richard Crowley <r@rcrowley.org>

@@ -1,3 +1,8 @@
+#
+# curvr
+# Richard Crowley <r@rcrowley.org>
+#
+
 # Catch email sent to the secret address
 :0 bfW
 * ^TO_<SECRET_CURVRMAIL_ADDRESS>@rcrowley.org

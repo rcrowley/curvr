@@ -1,7 +1,6 @@
-/* curvr
- * curvr.cc
- * Richard Crowley
- * $Id: curvr.cc 22 2008-02-05 04:33:21Z rcrowley $
+/*
+ * curvr
+ * Richard Crowley <r@rcrowley.org>
  */
 
 // GraphicsMagick

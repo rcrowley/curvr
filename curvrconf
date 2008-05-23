@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 
+#
 # curvr
-# curvrconf
-# Richard Crowley
-# $Id: curvrconf 23 2008-02-05 04:33:27Z rcrowley $
+# Richard Crowley <r@rcrowley.org>
+#
 
 # Gets a token by redirecting you to http://localhost:81/...
 

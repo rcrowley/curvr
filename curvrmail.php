@@ -1,10 +1,10 @@
 #!/usr/bin/php
 <?php
 
+#
 # curvr
-# curvrmail
-# Richard Crowley
-# $Id$
+# Richard Crowley <r@rcrowley.org>
+#
 
 # This works with my Nokia N73.  I don't care if it works on your phone.
 # Tread lightly.

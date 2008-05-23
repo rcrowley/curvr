@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 
+#
 # curvr
-# curvrmail
-# Richard Crowley
-# $Id: curvrmail 38 2008-02-05 16:30:36Z rcrowley $
+# Richard Crowley <r@rcrowley.org>
+#
 
 # This works with my Nokia N73.  I don't care if it works on your phone.
 # Tread lightly.
