@@ -91,27 +91,29 @@ void apply_cmap(Magick::Image & img, cmap_t * cmap) {
 			 * http://flickr.com/photos/rcrowley/2233623053/.
 			 */
 
-			// Turn the red up to 11 whenever we need to
+			/* WTF?
+			 */
+
 			if (0 > cmap[red].red && red < -cmap[red].red) {
-				px->red = range;
+//				px->red = 0;
 			} else if (0 < cmap[red].red && range - red < cmap[red].red) {
-				px->red = range;
+//				px->red = range;
 			} else {
 				px->red += cmap[red].red;
 			}
 
-			// Keep blue and green a bit more sedated
 			if (0 > cmap[red].green && green < -cmap[red].green) {
-				px->green = 0;
+//				px->green = 0;
 			} else if (0 < cmap[red].green && range - green < cmap[red].green) {
-				px->green = range;
+//				px->green = range;
 			} else {
 				px->green += cmap[red].green;
 			}
+
 			if (0 > cmap[red].blue && blue < -cmap[red].blue) {
-				px->blue = 0;
+//				px->blue = 0;
 			} else if (0 < cmap[red].blue && range - blue < cmap[red].blue) {
-				px->blue = range;
+//				px->blue = range;
 			} else {
 				px->blue += cmap[red].blue;
 			}

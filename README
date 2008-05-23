@@ -4,7 +4,7 @@ NAME
 SYNOPSIS
 	curvr <input> [<process> [<param>...]] <output>
 	curvall <directory> [<process>]
-    curvrmail
+	curvrmail
 
 DESCRIPTION
 	Editing images is a painful and repetitive process.  The good hacker
