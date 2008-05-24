@@ -10,11 +10,6 @@
 
 use strict;
 
-use MIME::Base64;
-use Flickr::Upload::FireEagle;
-
-
-
 # Flickr API goodness
 my $FLICKR_API_KEY = '';
 my $FLICKR_SECRET = '';
@@ -29,6 +24,11 @@ my $FIREEAGLE_ACCESS_SECRET = '';
 my $CURVR_BIN = 'curvr';
 my $CURVR_PROCESS = 'curve';
 my $CURVR_VERSION = '0.2.1';
+
+
+
+use MIME::Base64;
+use Flickr::Upload::FireEagle;
 
 # Tags to add to every photo
 my $TAGS = "curvr curvr:process=$CURVR_PROCESS curvr:version=$CURVR_VERSION";
