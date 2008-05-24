@@ -29,18 +29,20 @@ ACTIONS
 
 DEPENDENCIES
 	GraphicsMagick
-		Developed using GraphicsMagick 1.1.10 on Mac OS X.  Will likely
+		Developed using GraphicsMagick 1.1.10 on Linux.  Will likely
 		work with 1.1.x and on other platforms, but I don't care to try.
-	Flickr::Upload::Dopplr
-		The curvrmail and curvrconf scripts are written in Perl.
+	Flickr::Upload::FireEagle
+		For uploading and automatic geotagging.  See the small patch that
+		prevents the FireEagle staleness check for localities.
 	XML::Simple
-		For curvrconf to pull down tokens
+	Digest::MD5
+	Mime::Base64
 
 VERSION
-	0.3
+	0.2.1
 
 DATE
-	2008-05-22
+	2008-05-24
 
 AUTHOR
 	Richard Crowley <r@rcrowley.org>
