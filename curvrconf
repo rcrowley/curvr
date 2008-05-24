@@ -19,9 +19,9 @@ use strict;
 use Digest::MD5 'md5_hex';
 use XML::Simple 'XMLin';
 
-# Flickr API config
-my $API_KEY = '';
-my $SECRET = '';
+# Flickr API goodness
+my $FLICKR_API_KEY = '';
+my $FLICKR_SECRET = '';
 
 # Send the user to Flickr
 my $api_sig = md5_hex("${FLICKR_SECRET}api_key${FLICKR_API_KEY}permswrite");
@@ -55,8 +55,8 @@ use LWP;
 use CGI;
 
 # Fire Bagel!
-my $FIREEAGLE_CONSUMER_KEY = 'RQ5acpOuZ89F';
-my $FIREEAGLE_CONSUMER_SECRET = 'kDBhk939dJWklEHhPbN6AOVy3fGe5GiG';
+my $FIREEAGLE_CONSUMER_KEY = '';
+my $FIREEAGLE_CONSUMER_SECRET = '';
 
 my $REQUEST_TOKEN_URL = 'http://fireeagle.yahooapis.com/oauth/request_token';
 my $AUTHORIZATION_URL = 'http://fireeagle.yahoo.net/oauth/authorize';

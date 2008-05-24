@@ -20,8 +20,11 @@ my $FLICKR_API_KEY = '';
 my $FLICKR_SECRET = '';
 my $FLICKR_TOKEN = '';
 
-# Dopplr API token
-my $DOPPLR_TOKEN = '';
+# Fire Bagel!
+my $FIREEAGLE_CONSUMER_KEY = '';
+my $FIREEAGLE_CONSUMER_SECRET = '';
+my $FIREEAGLE_ACCESS_TOKEN = '';
+my $FIREEAGLE_ACCESS_SECRET = '';
 
 my $CURVR_BIN = 'curvr';
 my $CURVR_PROCESS = 'curve';
