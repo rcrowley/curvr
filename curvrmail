@@ -5,14 +5,15 @@
 # Richard Crowley <r@rcrowley.org>
 #
 
-# This works with my Nokia N73.  I don't care if it works on your phone.
+# This works with my Nokia N82.  I don't care if it works on your phone.
 # Tread lightly.
 
 use strict;
 
 use MIME::Base64;
-#use Flickr::Upload::Dopplr;
-use Flickr::Upload;
+use Flickr::Upload::FireEagle;
+
+
 
 # Flickr API goodness
 my $FLICKR_API_KEY = '';
@@ -22,9 +23,9 @@ my $FLICKR_TOKEN = '';
 # Dopplr API token
 my $DOPPLR_TOKEN = '';
 
-my $CURVR_BIN = '/home/rcrowley/bin/curvr';
+my $CURVR_BIN = 'curvr';
 my $CURVR_PROCESS = 'curve';
-my $CURVR_VERSION = '0.2';
+my $CURVR_VERSION = '0.2.1';
 
 # Tags to add to every photo
 my $TAGS = "curvr curvr:process=$CURVR_PROCESS curvr:version=$CURVR_VERSION";
@@ -114,18 +115,20 @@ $tags =~ s/^\s+//;
 $tags =~ s/\s+$//;
 $tags .= " $TAGS";
 
-# Upload with the Dopplr
-#my %dopplr = (
-#	'auth_token' => $DOPPLR_TOKEN,
-#	'tagify' => 'delicious'
-#);
+# Upload with Fire Bagel
+my %fireeagle = (
+	'consumer_key' => $FIREEAGLE_CONSUMER_KEY,
+	'consumer_secret' => $FIREEAGLE_CONSUMER_SECRET,
+	'access_token' => $FIREEAGLE_ACCESS_TOKEN,
+	'access_token_secret' => $FIREEAGLE_ACCESS_SECRET,
+	'tagify' => 'delicious'
+);
 my %flickr = (
 	'key' => $FLICKR_API_KEY,
 	'secret' => $FLICKR_SECRET,
-#	'dopplr' => \%dopplr
+	'fireeagle' => \%fireeagle
 );
-#my $uploadr = Flickr::Upload::Dopplr->new(\%flickr);
-my $uploadr = Flickr::Upload->new(\%flickr);
+my $uploadr = Flickr::Upload::FireEagle->new(\%flickr);
 my $photo_id = $uploadr->upload(
 	'photo' => $out,
 	'auth_token' => $FLICKR_TOKEN,

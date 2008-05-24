@@ -9,41 +9,112 @@
 
 use strict;
 
+
+
+#
+# Flickr
+#   TODO: Change to desktop-style authentication without the callback
+#
+
 use Digest::MD5 'md5_hex';
 use XML::Simple 'XMLin';
-use Net::Google::AuthSub;
 
 # Flickr API config
 my $API_KEY = '';
 my $SECRET = '';
 
 # Send the user to Flickr
-my $api_sig = md5_hex("${SECRET}api_key${API_KEY}permswrite");
+my $api_sig = md5_hex("${FLICKR_SECRET}api_key${FLICKR_API_KEY}permswrite");
 print "\nFlickr\n";
-print "Give this to your browser, bring back what it gives you.\n";
-print "http://flickr.com/services/auth/?api_key=${API_KEY}&perms=write&api_sig=${api_sig}\n";
+print "Give this to your browser, paste the URL you're bounced to below.\n";
+print "http://flickr.com/services/auth/?api_key=${FLICKR_API_KEY}&perms=write&api_sig=${api_sig}\n";
 print "Result: ";
 my $flickr = <STDIN>;
 
 # Get a token for the Flickr API
-$flickr =~ m!^http://localhost:81/\?frob=(.+)$!;
+$flickr =~ m/^http:\/\/localhost:81\/\?frob=(.+)$/;
 my $frob = $1;
-$api_sig = md5_hex("${SECRET}api_key${API_KEY}frob${frob}methodflickr.auth.getToken");
-my $raw = `wget -q -O - 'http://flickr.com/services/rest/?api_key=${API_KEY}&method=flickr.auth.getToken&frob=${frob}&api_sig=${api_sig}'`;
+$api_sig = md5_hex("${FLICKR_SECRET}api_key${FLICKR_API_KEY}frob${frob}methodflickr.auth.getToken");
+my $raw = `wget -q -O - 'http://flickr.com/services/rest/?api_key=${FLICKR_API_KEY}&method=flickr.auth.getToken&frob=${frob}&api_sig=${api_sig}'`;
 my $xml = XMLin($raw);
 print "\nFlickr API token: ", $xml->{'auth'}->{'token'}, "\n";
 
-# Send the user to Dopplr
-print "\nDopplr\n";
-print "Give this to your browser, bring back what it gives you.\n";
-print "https://www.dopplr.com/api/AuthSubRequest?scope=http://www.dopplr.com/&next=http://localhost:81/&session=1\n";
-print "Result: ";
-my $dopplr = <STDIN>;
 
-# Get a token for the Dopplr API
-$dopplr =~ m!^http://localhost:81/\?token=(.+)$!;
-my $token = $1;
-my $auth = Net::Google::AuthSub->new('url' => 'https://www.dopplr.com/api');
-$auth->auth('null', $token);
-my $sess = $auth->session_token();
-print "\nDopplr API token: $sess\n\n";
+
+#
+# Fire Bagel!
+#   OAuth walkthrough - https://fireeagle.yahooapis.com/developer/code/perl
+#
+
+use Net::OAuth::Request;
+use Net::OAuth::RequestTokenRequest;
+use Net::OAuth::AccessTokenRequest;
+use Net::OAuth::ProtectedResourceRequest;
+use Data::Dumper;
+use LWP;
+use CGI;
+
+# Fire Bagel!
+my $FIREEAGLE_CONSUMER_KEY = 'RQ5acpOuZ89F';
+my $FIREEAGLE_CONSUMER_SECRET = 'kDBhk939dJWklEHhPbN6AOVy3fGe5GiG';
+
+my $REQUEST_TOKEN_URL = 'http://fireeagle.yahooapis.com/oauth/request_token';
+my $AUTHORIZATION_URL = 'http://fireeagle.yahoo.net/oauth/authorize';
+my $ACCESS_TOKEN_URL = 'http://fireeagle.yahooapis.com/oauth/access_token';
+my $QUERY_API_URL = 'http://fireeagle.yahooapis.com/api/0.1/user';
+my $UPDATE_API_URL = 'http://fireeagle.yahooapis.com/api/0.1/update';
+
+print "\nFire Bagel!\n";
+my $request_token_request = Net::OAuth::RequestTokenRequest->new(
+	consumer_key => $FIREEAGLE_CONSUMER_KEY,
+	consumer_secret => $FIREEAGLE_CONSUMER_SECRET,
+	request_url => $REQUEST_TOKEN_URL,
+	request_method => 'GET',
+	signature_method => 'HMAC-SHA1',
+	timestamp => time,
+	nonce => int(rand(2 ** 32)),
+);
+$request_token_request->sign;
+die "COULDN'T VERIFY! Check OAuth parameters.\n" unless $request_token_request->verify;
+my $request_token_request_url = $REQUEST_TOKEN_URL . '?' . $request_token_request->to_post_body;
+my $browser = LWP::UserAgent->new;
+my $request_token_response = $browser->get( $request_token_request_url );
+die $request_token_response->status_line unless ($request_token_response->is_success);
+my $request_token_response_query = new CGI($request_token_response->content);
+my $oauth_token = $request_token_response_query->param('oauth_token');
+my $oauth_token_secret = $request_token_response_query->param('oauth_token_secret');
+if ( ! ( $oauth_token && $oauth_token_secret ) ) {
+	die "ERROR : FireEagle did not reply with an oauth_token and oauth_token_secret";
+}
+my $authorization_url = $AUTHORIZATION_URL . '?oauth_token=' . $oauth_token;
+print "Give this to your browser, press <ENTER> after you're done there.\n";
+print "$authorization_url\n";
+my $enter = <STDIN>;
+my $access_token_request = Net::OAuth::AccessTokenRequest->new(
+	consumer_key => $FIREEAGLE_CONSUMER_KEY,
+	consumer_secret => $FIREEAGLE_CONSUMER_SECRET,
+	request_url => $ACCESS_TOKEN_URL,
+	request_method => 'GET',
+	signature_method => 'HMAC-SHA1',
+	timestamp => time,
+	nonce => int(rand(2 ** 32)),
+	token => $oauth_token,
+	token_secret => $oauth_token_secret,
+);
+$access_token_request->sign;
+die "COULDN'T VERIFY! Check OAuth parameters.\n" unless $access_token_request->verify;
+my $access_token_request_url = $ACCESS_TOKEN_URL . '?' . $access_token_request->to_post_body;
+my $access_token_response = $browser->get( $access_token_request_url );
+if ( ! ($access_token_response->is_success) ) { 
+	die $access_token_response->status_line; 
+}
+my $access_token_response_query = new CGI($access_token_response->content);
+my $oauth_access_token = $access_token_response_query->param('oauth_token');
+my $oauth_access_token_secret = $access_token_response_query->param('oauth_token_secret');
+if ( ! ( $oauth_token && $oauth_token_secret ) ) {
+	die "ERROR : FireEagle did not reply with an oauth_token and oauth_token_secret";
+}
+print "Request token: $oauth_token\n";
+print "Request secret: $oauth_token_secret\n";
+print "Access token: $oauth_access_token\n";
+print "Access secret: $oauth_access_token_secret\n";
